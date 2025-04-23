@@ -1,0 +1,49 @@
+name: 'Anchor Verifiable Build'
+description: 'Generate a verifiable Anchor build'
+branding:
+  icon: anchor
+  color: blue
+inputs:
+  program:
+    description: 'The program name'
+    required: true
+  anchor-version:
+    description: 'Version of Anchor to use'
+    required: true
+  solana-cli-version:
+    description: 'Version of Solana to use'
+    required: true
+  features:
+    description: 'Features to pass to cargo'
+    required: false
+    default: 'default'
+runs:
+  using: 'composite'
+  steps:
+    - uses: ./.github/workflows/actions/setup-anchor.yaml
+      with:
+        anchor-version: ${{ inputs.anchor-version }}
+        solana-cli-version: ${{ inputs.solana-cli-version }}
+    - name: Cache Cargo registry + index
+      uses: actions/cache@v4
+      id: cache-cargo-registry
+      with:
+        path: |
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+        key: cargo-${{ runner.os }}-v0001-${{ hashFiles('**/Cargo.lock') }}
+    - name: Cache Solana Verify
+      uses: actions/cache@v4
+      id: cache-solana-verify
+      with:
+        path: |
+          ~/.cargo/bin/solana-verify
+        key: cargo-${{ runner.os }}-solana-verify
+    - run: cargo install solana-verify
+      if: steps.cache-solana-verify.outputs.cache-hit != 'true'
+      shell: bash
+    - run: ~/.cargo/bin/solana-verify build --library-name $PROGRAM --base-image ellipsislabs/solana:${{ inputs.solana-cli-version }} -- --features ${{ inputs.features }}
+      shell: bash
+      env:
+        PROGRAM: ${{ inputs.program }}
