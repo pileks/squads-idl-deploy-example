@@ -46,6 +46,8 @@ runs:
       shell: bash
     - run: anchor build --program-name $PROGRAM
       shell: bash
+      env:
+        PROGRAM: ${{ inputs.program }}
     - run: ~/.cargo/bin/solana-verify build --library-name $PROGRAM -- --features ${{ inputs.features }} #--base-image ellipsislabs/solana:${{ inputs.solana-cli-version }} 
       shell: bash
       env:
