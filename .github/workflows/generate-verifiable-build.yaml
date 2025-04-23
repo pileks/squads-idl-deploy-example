@@ -8,6 +8,8 @@ on:
 jobs:
   generate-verifiable-idl_example:
     runs-on: ubuntu-22.04
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/workflows/actions/anchor-verifiable-build
