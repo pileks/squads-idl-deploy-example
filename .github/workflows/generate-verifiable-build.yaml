@@ -7,14 +7,14 @@ on:
 
 jobs:
   generate-verifiable-idl_example:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
       - uses: metadaoproject/anchor-verifiable-build@v0.2
         with:
           program: idl_example
           anchor-version: '0.29.0'
-          solana-cli-version: '1.18.26'
+          solana-cli-version: '1.17.16'
       - run: 'git pull --rebase'
       - run: cp target/deploy/idl_example.so ./verifiable-builds
       - run: cp target/idl/idl_example.json ./verifiable-builds
