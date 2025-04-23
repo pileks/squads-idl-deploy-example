@@ -20,6 +20,7 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    - uses: actions/checkout@v3
     - uses: ./.github/workflows/actions/setup-anchor.yaml
       with:
         anchor-version: ${{ inputs.anchor-version }}
