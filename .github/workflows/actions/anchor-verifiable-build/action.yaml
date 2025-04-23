@@ -44,7 +44,7 @@ runs:
     - run: cargo install solana-verify
       if: steps.cache-solana-verify.outputs.cache-hit != 'true'
       shell: bash
-    - run: anchor build --program-name $PROGRAM
+    - run: anchor build --program-name $PROGRAM --arch sbf
       shell: bash
       env:
         PROGRAM: ${{ inputs.program }}
