@@ -14,7 +14,7 @@ jobs:
         with:
           program: idl_example
           anchor-version: '0.29.0'
-          solana-cli-version: '1.17.16'
+          solana-cli-version: '1.18.16'
       - run: 'git pull --rebase'
       - run: cp target/deploy/idl_example.so ./verifiable-builds
       - run: cp target/idl/idl_example.json ./verifiable-builds
