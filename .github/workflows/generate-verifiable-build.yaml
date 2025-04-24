@@ -18,8 +18,8 @@ jobs:
           anchor-version: '0.29.0'
           solana-cli-version: '2.1.14'
       - run: 'git pull --rebase'
-      - run: cp target/deploy/idl_example.so ./verifiable-builds
-      - run: cp target/idl/idl_example.json ./verifiable-builds
+      - run: cp target/deploy/idl_example.so ./verifiable-builds/idl_example.so
+      - run: cp target/idl/idl_example.json ./verifiable-builds/idl_example.json
       - name: Commit verifiable build back to mainline
         uses: EndBug/add-and-commit@v9.1.4
         with:
