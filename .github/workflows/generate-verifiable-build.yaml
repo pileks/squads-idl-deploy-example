@@ -26,3 +26,16 @@ jobs:
         with:
           default_author: github_actions
           message: 'Update idl_example verifiable build'
+      - name: Deploy verifiable build buffer and IDL
+        id: deploy-verifiable-buffer
+        uses: ./.github/workflows/actions/deploy-verifiable-buffer
+        with:
+          network: devnet
+          keypair: ${{ secrets.DEPLOY_KEYPAIR }}
+          program: idl_example
+          program-id: HtVhuiF23oEMx1nMhqmLcL1eNKeQ8vz2UnbzhPE9ek1v
+          buffer-authority: 2SG7fCnreQ9wHoqQC7U6pfDN2rYmBqExKuqcGR3StrZW
+      - name: Log buffer and IDL addresses
+        run: |
+          echo "Buffer address: ${{ steps.deploy-verifiable-buffer.outputs.buffer }}"
+          echo "IDL address: ${{ steps.deploy-verifiable-buffer.outputs.idl-buffer }}"
