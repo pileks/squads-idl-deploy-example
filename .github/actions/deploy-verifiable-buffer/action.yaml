@@ -25,6 +25,14 @@ inputs:
   buffer-authority:
     description: "The buffer authority to set"
     required: true
+  anchor-version:
+    description: "The anchor version to use"
+    required: true
+    default: "0.29.0"
+  node-version:
+    description: "The node version to use"
+    required: true
+    default: "20.16.0"
 outputs:
   buffer:
     description: "The buffer address"
@@ -39,7 +47,8 @@ runs:
     # - uses: ./.github/actions/setup/
     - uses: ./.github/actions/setup-anchor/
       with:
-        node-version: ${{ env.NODE_VERSION }}
+        node-version: ${{ inputs.node-version }}
+        anchor-version: ${{ inputs.anchor-version }}
     - run: echo "$DEPLOY_KEYPAIR" > ./deploy-keypair.json && chmod 600 ./deploy-keypair.json
       shell: bash
       env:
