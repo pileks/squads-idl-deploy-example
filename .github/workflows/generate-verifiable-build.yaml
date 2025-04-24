@@ -41,7 +41,6 @@ jobs:
         run: |
           echo "Buffer address: ${{ steps.deploy-verifiable-buffer.outputs.buffer }}"
           echo "IDL address: ${{ steps.deploy-verifiable-buffer.outputs.idl-buffer }}"
-       - uses: actions/checkout@v4
       - name: Set upgrade authority to Squads multisig
         uses: Squads-Protocol/squads-v4-program-upgrade@beta
         with:
