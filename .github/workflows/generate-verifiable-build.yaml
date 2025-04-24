@@ -33,7 +33,7 @@ jobs:
           network: devnet
           keypair: ${{ secrets.DEPLOY_KEYPAIR }}
           program: idl_example
-          program-id: HtVhuiF23oEMx1nMhqmLcL1eNKeQ8vz2UnbzhPE9ek1v
+          program-id: 1337wNtnZnGMvdKPBT1cUXfZnhvUgWv73fzUviMLj8x6
           buffer-authority: 2SG7fCnreQ9wHoqQC7U6pfDN2rYmBqExKuqcGR3StrZW
           anchor-version: '0.29.0'
           node-version: '20.16.0'
@@ -41,3 +41,17 @@ jobs:
         run: |
           echo "Buffer address: ${{ steps.deploy-verifiable-buffer.outputs.buffer }}"
           echo "IDL address: ${{ steps.deploy-verifiable-buffer.outputs.idl-buffer }}"
+       - uses: actions/checkout@v4
+      - name: Set upgrade authority to Squads multisig
+        uses: Squads-Protocol/squads-v4-program-upgrade@beta
+        with:
+          network-url: "https://api.devnet.solana.com"
+          multisig-pda: "FDLE8KNYzj4av6Hp8ZXxs3vD8GU459Eu31Y1GtXpG4Gz"
+          multisig-vault-index: "0"
+          program-id: "1337wNtnZnGMvdKPBT1cUXfZnhvUgWv73fzUviMLj8x6"
+          buffer: "${{ steps.deploy-verifiable-buffer.outputs.buffer }}"
+          spill-address: "2SG7fCnreQ9wHoqQC7U6pfDN2rYmBqExKuqcGR3StrZW"
+          name: "Test Upgrade"
+          executable-data: "H5rxQS4BGc77552Da6aDDNH2G7HCpC1fUxyeuDpwEQK4"
+          keypair: ${{ secrets.DEPLOY_KEYPAIR }}
+          idl-buffer: "${{ steps.deploy-verifiable-buffer.outputs.idl-buffer }}"
