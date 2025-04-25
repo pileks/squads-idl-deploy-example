@@ -42,10 +42,10 @@ jobs:
           echo "Buffer address: ${{ steps.deploy-verifiable-buffer.outputs.buffer }}"
           echo "IDL address: ${{ steps.deploy-verifiable-buffer.outputs.idl-buffer }}"
       - name: Set upgrade authority to Squads multisig
-        uses: pileks/squads-v4-program-upgrade@0.0.1
+        uses: pileks/squads-v4-program-upgrade@0.0.2
         with:
           network-url: "https://api.devnet.solana.com"
-          multisig-pda: "FDLE8KNYzj4av6Hp8ZXxs3vD8GU459Eu31Y1GtXpG4Gz"
+          multisig-pda: "J5wHJwmkyhx1rnn7xeYyUVKYgCvDPwGJz4h44WE6cHCJ"
           multisig-vault-index: "0"
           program-id: "1337wNtnZnGMvdKPBT1cUXfZnhvUgWv73fzUviMLj8x6"
           buffer: "${{ steps.deploy-verifiable-buffer.outputs.buffer }}"
