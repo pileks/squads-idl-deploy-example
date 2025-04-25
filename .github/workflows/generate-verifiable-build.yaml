@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-22.04
     permissions:
       contents: write
+    outputs:
+      buffer: ${{ steps.deploy-verifiable-buffer.outputs.buffer }}
+      idl-buffer: ${{ steps.deploy-verifiable-buffer.outputs.idl-buffer }}
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/anchor-verifiable-build
@@ -41,6 +44,14 @@ jobs:
         run: |
           echo "Buffer address: ${{ steps.deploy-verifiable-buffer.outputs.buffer }}"
           echo "IDL address: ${{ steps.deploy-verifiable-buffer.outputs.idl-buffer }}"
+  upload-verifiable-idl_example:
+    runs-on: ubuntu-22.04
+    needs: generate-verifiable-idl_example
+    steps:
+      - name: Log buffer and IDL addresses
+        run: |
+          echo "Buffer address: ${{ needs.generate-verifiable-idl_example.outputs.buffer }}"
+          echo "IDL address: ${{ needs.generate-verifiable-idl_example.outputs.idl-buffer }}"
       - name: Set upgrade authority to Squads multisig
         uses: pileks/squads-v4-program-upgrade@0.0.3
         with:
@@ -48,9 +59,9 @@ jobs:
           multisig-pda: "J5wHJwmkyhx1rnn7xeYyUVKYgCvDPwGJz4h44WE6cHCJ"
           multisig-vault-index: "0"
           program-id: "1337wNtnZnGMvdKPBT1cUXfZnhvUgWv73fzUviMLj8x6"
-          buffer: "${{ steps.deploy-verifiable-buffer.outputs.buffer }}"
+          buffer: "${{ needs.generate-verifiable-idl_example.outputs.buffer }}"
           spill-address: "2SG7fCnreQ9wHoqQC7U6pfDN2rYmBqExKuqcGR3StrZW"
           name: "Test Upgrade"
           executable-data: "H5rxQS4BGc77552Da6aDDNH2G7HCpC1fUxyeuDpwEQK4"
           keypair: ${{ secrets.DEPLOY_KEYPAIR }}
-          idl-buffer: "${{ steps.deploy-verifiable-buffer.outputs.idl-buffer }}"
+          idl-buffer: "${{ needs.generate-verifiable-idl_example.outputs.idl-buffer }}"
