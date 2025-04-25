@@ -1,29 +1,38 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: generate-verifiable-build
 on:
-  workflow_call:
+  workflow_dispatch:
     inputs:
       program:
         required: true
         type: string
+        description: "The program to generate a verifiable build for"
+        default: "idl_example"
       program-id:
         required: true
         type: string
+        description: "The program id of the program we are uploading"
+        default: "1337wNtnZnGMvdKPBT1cUXfZnhvUgWv73fzUviMLj8x6"
       buffer-authority:
         required: true
         type: string
+        description: "The buffer authority to set"
+        default: "J5wHJwmkyhx1rnn7xeYyUVKYgCvDPwGJz4h44WE6cHCJ"
       anchor-version:
         required: true
         type: string
         default: "0.29.0"
+        description: "The anchor version to use"
       solana-cli-version:
         required: true
         type: string
         default: "2.1.14"
+        description: "The solana cli version to use"
       network:
         required: true
         type: string
         default: "devnet"
+        description: "The network to use"
 
 jobs:
   generate-verifiable-idl_example:
