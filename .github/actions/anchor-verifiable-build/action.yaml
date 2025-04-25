@@ -21,7 +21,7 @@ runs:
   using: 'composite'
   steps:
     - uses: actions/checkout@v3
-    - uses: ./.github/actions/setup-anchor
+    - uses: ./.github/actions/setup
       with:
         anchor-version: ${{ inputs.anchor-version }}
         solana-cli-version: ${{ inputs.solana-cli-version }}
@@ -48,7 +48,7 @@ runs:
       shell: bash
       env:
         PROGRAM: ${{ inputs.program }}
-    - run: ~/.cargo/bin/solana-verify build --library-name $PROGRAM -- --features ${{ inputs.features }} #--base-image ellipsislabs/solana:${{ inputs.solana-cli-version }} 
+    - run: ~/.cargo/bin/solana-verify build --library-name $PROGRAM -- --features ${{ inputs.features }}
       shell: bash
       env:
         PROGRAM: ${{ inputs.program }}

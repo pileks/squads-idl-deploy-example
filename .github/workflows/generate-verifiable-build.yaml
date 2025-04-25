@@ -1,9 +1,29 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: generate-verifiable-build
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
+  workflow_call:
+    inputs:
+      program:
+        required: true
+        type: string
+      program-id:
+        required: true
+        type: string
+      buffer-authority:
+        required: true
+        type: string
+      anchor-version:
+        required: true
+        type: string
+        default: "0.29.0"
+      solana-cli-version:
+        required: true
+        type: string
+        default: "2.1.14"
+      network:
+        required: true
+        type: string
+        default: "devnet"
 
 jobs:
   generate-verifiable-idl_example:
@@ -33,12 +53,12 @@ jobs:
         id: deploy-verifiable-buffer
         uses: ./.github/actions/deploy-verifiable-buffer
         with:
-          network: devnet
+          network: ${{ inputs.network }}
           keypair: ${{ secrets.DEPLOY_KEYPAIR }}
-          program: idl_example
-          program-id: 1337wNtnZnGMvdKPBT1cUXfZnhvUgWv73fzUviMLj8x6
-          buffer-authority: 2SG7fCnreQ9wHoqQC7U6pfDN2rYmBqExKuqcGR3StrZW
-          anchor-version: '0.29.0'
+          program: ${{ inputs.program }}
+          program-id: ${{ inputs.program-id }}
+          buffer-authority: ${{ inputs.buffer-authority }}
+          anchor-version: ${{ inputs.anchor-version }}
           node-version: '20.16.0'
       - name: Log buffer and IDL addresses
         run: |

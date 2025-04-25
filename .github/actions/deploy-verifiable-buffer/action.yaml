@@ -5,10 +5,6 @@ inputs:
     description: "Whether to use devnet feature"
     required: false
     default: "false"
-  testing:
-    description: "Whether to use devnet feature"
-    required: false
-    default: "false"
   network:
     description: "The Solana network"
     required: true
@@ -29,6 +25,10 @@ inputs:
     description: "The anchor version to use"
     required: true
     default: "0.29.0"
+  solana-cli-version:
+    description: "The solana cli version to use"
+    required: true
+    default: "2.1.14"
   node-version:
     description: "The node version to use"
     required: true
@@ -44,11 +44,11 @@ outputs:
 runs:
   using: "composite"
   steps:
-    # - uses: ./.github/actions/setup/
-    - uses: ./.github/actions/setup-anchor/
+    - uses: ./.github/actions/setup
       with:
         node-version: ${{ inputs.node-version }}
         anchor-version: ${{ inputs.anchor-version }}
+        solana-cli-version: ${{ inputs.solana-cli-version }}
     - run: echo "$DEPLOY_KEYPAIR" > ./deploy-keypair.json && chmod 600 ./deploy-keypair.json
       shell: bash
       env:
@@ -92,16 +92,12 @@ runs:
       shell: bash
     - run: echo "the idl buffer is ${{ steps.buffer-deploy-store.outputs.IDL_BUFFER }}"
       shell: bash
-    - run: echo "the idl is $(cat ./target/idl/$PROGRAM.json)"
-      shell: bash
-      env:
-        PROGRAM: ${{ inputs.program }}
     - name: Transfer idl buffer to authority
       uses: nick-invision/retry@v2
       if: steps.cache-buffer.outputs.cache-hit != 'true'
       with:
         timeout_minutes: 10
-        max_attempts: 50
+        max_attempts: 20
         shell: bash
         command: anchor idl set-authority $IDL_BUFFER --provider.cluster $NETWORK --program-id $PROGRAM_ID --new-authority $AUTHORITY --provider.wallet ./deploy-keypair.json
       env:
@@ -109,12 +105,12 @@ runs:
         AUTHORITY: ${{ inputs.buffer-authority }}
         NETWORK: ${{ inputs.network }}
         PROGRAM_ID: ${{ inputs.program-id }}
-    - name: Transfer buffer to authority
+    - name: Transfer program buffer to authority
       uses: nick-invision/retry@v2
       if: steps.cache-buffer.outputs.cache-hit != 'true'
       with:
         timeout_minutes: 10
-        max_attempts: 50
+        max_attempts: 20
         shell: bash
         command: solana program set-buffer-authority $BUFFER -k ./deploy-keypair.json --new-buffer-authority $AUTHORITY -u $NETWORK
       env:
