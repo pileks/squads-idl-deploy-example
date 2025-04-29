@@ -3,11 +3,6 @@ name: generate-verifiable-build
 on:
   workflow_dispatch:
     inputs:
-      program:
-        required: true
-        type: string
-        description: "The program to generate a verifiable build for"
-        default: "idl_example"
       program-id:
         required: true
         type: string
@@ -89,7 +84,7 @@ jobs:
         with:
           network: ${{ inputs.network }}
           keypair: ${{ secrets.DEPLOY_KEYPAIR }}
-          program: ${{ inputs.program }}
+          program: idl_example
           program-id: ${{ inputs.program-id }}
           buffer-authority: ${{ inputs.multisig-vault-address }}
           anchor-version: ${{ inputs.anchor-version }}
