@@ -21,13 +21,18 @@ on:
       multisig-pda:
         required: true
         type: string
-        description: "The multisig pda to set as buffer authority"
+        description: "The multisig pda to which the vault belongs"
         default: "J5wHJwmkyhx1rnn7xeYyUVKYgCvDPwGJz4h44WE6cHCJ"
       multisig-vault-index:
         required: true
         type: string
         description: "Index of the multisig vault executing the upgrade"
         default: "0"
+      multisig-vault-address:
+        required: true
+        type: string
+        description: "Address of the multisig vault executing the upgrade"
+        default: "ALxsUozu7d8ibng4k3aF9CPj1VGPGt8ZRogbpUwYsZkq"
       spill-address:
         required: true
         type: string
@@ -86,7 +91,7 @@ jobs:
           keypair: ${{ secrets.DEPLOY_KEYPAIR }}
           program: ${{ inputs.program }}
           program-id: ${{ inputs.program-id }}
-          buffer-authority: ${{ inputs.multisig-pda }}
+          buffer-authority: ${{ inputs.multisig-vault-address }}
           anchor-version: ${{ inputs.anchor-version }}
           node-version: '20.16.0'
       - name: Log buffer and IDL addresses
