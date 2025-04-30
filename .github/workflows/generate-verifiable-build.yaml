@@ -102,7 +102,7 @@ jobs:
           echo "Buffer address: ${{ needs.generate-verifiable-idl_example.outputs.buffer }}"
           echo "IDL address: ${{ needs.generate-verifiable-idl_example.outputs.idl-buffer }}"
       - name: Set upgrade authority to Squads multisig
-        uses: pileks/squads-v4-program-upgrade@0.0.4-alpha
+        uses: pileks/squads-v4-program-upgrade@1.0.0
         with:
           network-url: ${{ inputs.endpoint }}
           multisig-pda: ${{ inputs.multisig-pda }}
